@@ -1,14 +1,5 @@
 <?php
 
-function rfc_822_date($time_str) {
-	$epoch = strtotime($time_str);
-	$ret = date("D, d M Y g:i:s T", $epoch);
-
-	return $ret;
-}
-
-//////////////////////////////////////////////////
-
 class EasyPod {
 
 	function __construct() {
