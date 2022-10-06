@@ -143,7 +143,7 @@ class EasyPod {
 
 		foreach ($info['episodes'] as &$x) {
 			$file = $x['audioFile'];
-			$x['audioFileSize'] = filesize($file);
+			$x['audioFileBytes'] = filesize($file);
 		}
 
 		$sluz->assign($info);
