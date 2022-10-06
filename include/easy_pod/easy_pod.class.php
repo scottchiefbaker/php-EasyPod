@@ -143,6 +143,26 @@ class EasyPod {
 
 		$sluz->assign($info);
 
+		// We massage the episode list a little before we spit it out as RSS
+		$base_url = $info['global']['podcast_url'] ?? "";
+		$eps      = $info['episodes'] ?? [];
+
+		foreach ($eps as $key => $x) {
+			$file = $eps[$key]['audioFile'] ?? "";
+
+			// The audioFile directive can be a relative link: "content/ep1.mp3"
+			// if so, we make it a FULL URL for the RSS feed
+			if (!preg_match("/^https?:/", $file)) {
+				$eps[$key]['audioFile'] = $base_url . $file;
+			}
+
+			// We remove any hidden episodes from the RSS feed
+			$is_hidden = !empty($eps[$key]['hidden']);
+			if ($is_hidden) {
+				unset($info['episodes'][$key]);
+			}
+		}
+
 		$vars = [];
 		$ret  = $sluz->fetch("tpls/rss.stpl");
 
