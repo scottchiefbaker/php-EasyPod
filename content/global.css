@@ -1,0 +1,29 @@
+body {
+	/*background: darkgray;*/
+	/*color: white;*/
+}
+
+.logo-image {
+	width: min(400px, 100%);
+}
+
+/* ========================================================================== */
+/* MEDIA QUERIES                                                              */
+/* ========================================================================== */
+
+/* This is for medium width devices - medium - high width desktops */
+@media (min-width: 1401px) and (max-width: 1800px) {
+}
+
+/* This is for medium width devices - medium width desktops */
+@media (min-width: 1026px) and (max-width: 1400px) {
+}
+
+/* This is for medium width devices - tablets */
+@media (min-width: 641px) and (max-width: 1025px) {
+}
+
+/* This is for small width devices - phones */
+@media (min-width: 0px) and (max-width: 640px) {
+}
+
