@@ -8,18 +8,11 @@
 		<link href="content/bootstrap.min.css" rel="stylesheet">
 		<link href="content/global.css" rel="stylesheet">
 		<link href="content/talk-bubble.ico" rel="icon" type="image/x-icon" />
-
-		<style>
-			.player { }
-			.ep_title {
-				font-size: 150%;
-			}
-		</style>
 	</head>
 
 	<body class="container-lg">
 		<h1 class="d-none d-md-block">
-			<span class="">{$info.title}</span>
+			<h1 class="">{$info.title}</h1>
 		</h1>
 
 		<div class="fs-6 mt-4"><span class="bg-success text-light p-2 rounded me-2 fw-bold">Episode {$ep.number}</span> {$ep.pubUnixtime|format_date}</div>

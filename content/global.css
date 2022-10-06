@@ -1,11 +1,22 @@
 body {
-	/*background: darkgray;*/
+	/*background: #222121;*/
 	/*color: white;*/
 }
 
 .logo-image {
 	width: min(400px, 100%);
 }
+
+/* ********** */
+/* Index page */
+/* ********** */
+.episode_wrapper:hover {
+	background: rgba(0, 85, 255, 0.07) !important;
+}
+
+/* ************ */
+/* Listen page  */
+/* ************ */
 
 /* ========================================================================== */
 /* MEDIA QUERIES                                                              */

@@ -8,12 +8,6 @@
 		<link href="content/bootstrap.min.css" rel="stylesheet">
 		<link href="content/global.css" rel="stylesheet">
 		<link href="content/talk-bubble.ico" rel="icon" type="image/x-icon" />
-
-		<style>
-			.episode_wrapper:hover {
-				background: rgba(0, 85, 255, 0.07) !important;
-			}
-		</style>
 	</head>
 	<body class="container-lg">
 		<h1 class="mb-4 text-center">{$info.title}</h1>
