@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset = "utf-8">
+		<meta name    = "viewport" content="width=device-width, initial-scale=1">
+		<title>{$info.title}</title>
+
+		<link href="content/bootstrap.min.css" rel="stylesheet">
+		<link href="content/global.css" rel="stylesheet">
+		<link href="content/talk-bubble.ico" rel="icon" type="image/x-icon" />
+
+		<style>
+			.episode_wrapper:hover {
+				background: rgba(0, 85, 255, 0.07) !important;
+			}
+		</style>
+	</head>
+	<body class="container-lg">
+		<h1 class="mb-4 text-center">{$info.title}</h1>
+
+		<div class="mb-3">
+			<img class="logo-image" src="{$info.image}" />
+		</div>
+
+		{if $info.description}
+		<p><b>Description:</b> {$info.description}</p>
+		{/if}
+
+		{foreach $eps as $x}
+		<a href="{$x.link}" class="text-decoration-none">
+			<div class="text-body">
+				<div class="text-start episode_wrapper bg-light border p-2 mb-2 rounded">
+					<span class="d-block mb-2 mb-md-0 d-md-inline">
+						{if $x.isComingSoon}
+						<p class="alert alert-success p-1 mb-2">Episode will be available on <b>{$x.pubUnixtime|format_date}</b></p>
+						{/if}
+						{if $x.is_new}
+						<span class="text-warning" title="Episode is new">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+								<path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
+							</svg>
+						</span>
+						{/if}
+
+						<b>Episode #{$x.number}:</b>
+					</span>
+
+					<span class="">{$x.title}</span>
+
+					<div class="d-none d-md-block mt-2">
+						{$x.description|parsedown_line}
+					</div>
+
+				</div>
+			</div>
+		</a>
+		{/foreach}
+
+		<div class="d-flex">
+			<div class="flex-fill">{$total} available episodes</div>
+			<div class="flex-fill text-end">
+				<a title="RSS Feed" class="text-warning" href="{$info.podcast_url}index.php?rss=true">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rss-fill" viewBox="0 0 16 16">
+					<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+				</svg>
+				</a>
+			</div>
+		</div>
+
+		<img class="d-none mb-3" src="https://www.perturb.org/gcount/gcount.php?name={$info.title|string_sanitize}" />
+	</body>
+</html>
