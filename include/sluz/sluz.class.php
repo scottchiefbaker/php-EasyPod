@@ -3,13 +3,13 @@
 ////////////////////////////////////////////////////////
 
 class sluz {
-	public $version      = '0.5';
+	public $version      = '0.6';
 	public $tpl_file     = null;
 	public $debug        = 0;
 	public $in_unit_test = false;
 	public $tpl_vars     = [];
+	public $tpl_path     = null;
 
-	private $tpl_path     = null;
 	private $php_file     = null;
 	private $var_prefix   = "sluz_pfx";
 	private $simple_mode  = false;
@@ -44,7 +44,7 @@ class sluz {
 		// If it doesn't start with a '{' it's plain text so we just return it
 		if ($str[0] !== "{") {
 			$ret = $str;
-		// Simple variable replacement {$foo}
+		// Simple variable replacement {$foo} or {$foo|default:"123"}
 		} elseif (preg_match('/^\{\s*\$(\w[\w\|\.\'":]*)\s*\}$/', $str, $m)) {
 			$ret = $this->variable_block($m[1]);
 		// If statement {if $foo}{/if}
@@ -143,9 +143,9 @@ class sluz {
 				$blocks[]  = $block;
 				$start    += strlen($block);
 				$i         = $start;
-			// If it's a comment we slurp all the chars until the first '*}' and make that the block
 			}
 
+			// If it's a comment we slurp all the chars until the first '*}' and make that the block
 			if ($is_comment) {
 				$end = strpos($str, "*}", $start);
 				if ($end === false) {
@@ -249,7 +249,7 @@ class sluz {
 			}
 		}
 
-		$inc_tpl = ($this->tpl_dir ?? "tpls/") . $file;
+		$inc_tpl = ($this->tpl_path ?? "tpls/") . $file;
 
 		if ($file && is_readable($inc_tpl)) {
 			$ext_str = file_get_contents($inc_tpl);
@@ -413,12 +413,13 @@ class sluz {
 
 	// parse a simple variable
 	private function variable_block($str) {
+
 		// If it has a '|' it's either a function call or 'default'
 		if (preg_match("/(.+?)\|(.+?)(:|$)/", $str, $m)) {
 			$key = $m[1];
 			$mod = $m[2];
 
-			$tmp        = $this->tpl_vars[$key] ?? null;
+			$tmp        = $this->array_dive($key, $this->tpl_vars) ?? "";
 			$is_nothing = ($tmp === null || $tmp === "");
 
 			// Empty with a default value
