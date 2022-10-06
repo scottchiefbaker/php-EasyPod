@@ -141,11 +141,6 @@ class EasyPod {
 	function get_rss_feed($info) {
 		global $sluz;
 
-		foreach ($info['episodes'] as &$x) {
-			$file = $x['audioFile'];
-			$x['audioFileBytes'] = filesize($file);
-		}
-
 		$sluz->assign($info);
 
 		$vars = [];
