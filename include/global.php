@@ -48,3 +48,9 @@ function rfc_822_date($time_str) {
 
 	return $ret;
 }
+
+function str_to_cdata($str) {
+	$ret = "<![CDATA[" . $str . "]]>";
+
+	return $ret;
+}

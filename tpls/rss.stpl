@@ -29,7 +29,7 @@
 		<item>
 			<title>{$ep.title}</title>
 			<link>{$global.podcast_url}{$ep.link}</link>
-			<description>{$ep.description}</description>
+			<description>{$ep.description|str_to_cdata}</description>
 			<pubDate>{$ep.pubDate|rfc_822_date}</pubDate>
 			<guid isPermaLink="false">{$global.podcast_url}{$ep.link}</guid>
 			<itunes:author>{$global.author}</itunes:author>
