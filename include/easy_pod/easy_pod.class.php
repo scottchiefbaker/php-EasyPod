@@ -39,7 +39,7 @@ class EasyPod {
 		$pod_url = preg_replace("/\/$/", "", $pod_url);
 		$ret['global']['rss_url'] = $pod_url . "/index.php?rss=true";
 
-		$cat_str = $ret['global']['categories'];
+		$cat_str = $ret['global']['categories'] ?? "";
 		$grps    = preg_split("/;/", $cat_str);
 
 		// List of categories
