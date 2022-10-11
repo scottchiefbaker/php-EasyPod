@@ -24,9 +24,6 @@
 		<a href="{$x.link}" class="text-decoration-none">
 		<div class="card mb-2">
 			<div class="card-header bg-dark text-light">
-				{if $x.isComingSoon}
-                <p class="alert alert-success p-1 mb-2">Episode will be available on <b>{$x.pubUnixtime|format_date}</b></p>
-                {/if}
                 {if $x.is_new}
                 <span class="text-warning" title="Episode is new">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
@@ -37,6 +34,9 @@
                 <b>Episode #{$x.number}:</b> {$x.title}
 			</div>
 			<div class="card-body">
+				{if $x.isComingSoon}
+                <p class="alert alert-success p-2 mb-2">Episode will be available on <b>{$x.pubUnixtime|format_date}</b></p>
+                {/if}
 				<p class="card-text text-dark">{$x.description|parsedown_line}</p>
 			</div>
 		</div>
