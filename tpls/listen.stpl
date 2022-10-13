@@ -71,7 +71,7 @@
 					</svg>
 				</div>
 
-				<div class="ms-2 mb-2 w-100" id="progress-bar" style="background: #e6e6e6; margin-top: 45px; height: 8px;" onclick="seek(event);" role="button">
+				<div class="ms-4 mb-2 w-100" id="progress-bar" style="background: #e6e6e6; margin-top: 45px; height: 8px;" onclick="seek(event);" role="button">
 					<div class="bg-success" id="duration-bar" style="height: 8px; width: 0px; "></div>
 				</div>
 			</div>
