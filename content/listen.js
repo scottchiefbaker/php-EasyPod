@@ -2,7 +2,6 @@
 var update_interval = 0;
 // If this is zero the UI won't update while the audio is playing
 var auto_ui_updates = 1;
-var is_touch_device = 0;
 
 function use_html5_audio() {
 	// Hide the HTML5 audio
@@ -12,13 +11,11 @@ function use_html5_audio() {
 
 	update_ui();
 	init_bar_hover();
-
-	is_touch_device = is_touch_enabled();
 }
 
 function init_bar_hover() {
 	// Touch devices don't get the mouse hover events
-	if (!is_touch_device) {
+	if (!is_touch_enabled()) {
 		$("#progress-bar").hover(
 			// When mouse enters we don't update the UI while playing
 			function() { auto_ui_updates = 0; },
