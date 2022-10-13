@@ -8,6 +8,41 @@ function use_html5_audio() {
 	$("#new_audio").removeClass('d-none');
 
 	update_ui();
+	init_bar_hover();
+}
+
+function init_bar_hover() {
+	$("#progress-bar").hover(
+		// When mouse enters we don't update the UI while playing
+		function() { auto_ui_updates = 0; },
+		// When mouse leaves we re-enables UI updates
+		function() { auto_ui_updates = 1; },
+	);
+
+	// As the move slides over the bar update the line
+	$("#progress-bar").mousemove(
+		function(event) {
+			var offsetl = event.target.offsetLeft;
+			var clickl  = event.clientX;
+
+			var total = $('#progress-bar').get(0).clientWidth;
+			var start = clickl - offsetl;
+
+			var totald = $("#audio").get(0).duration;
+			var seekp  = (start / total);
+
+			// Set the progress bar to where the cursor is
+			set_bar(seekp * 100);
+
+			// Get the duration
+			var x   = get_player_status();
+			var tot = x[1];
+
+			// The time in seconds is the percentage of the total duration
+			var cursor_pos = (seekp * tot);
+			set_text(time_format(cursor_pos) + " / " + time_format(tot));
+		},
+	);
 }
 
 function pause() {
