@@ -9,11 +9,12 @@
 		<link href="content/global.css" rel="stylesheet">
 		<link href="content/talk-bubble.ico" rel="icon" type="image/x-icon" />
 
+		<script src="content/jquery.min.js"></script>
 		<script src="content/listen.js"></script>
 
 		<script>
-			document.addEventListener("DOMContentLoaded", function(event) {
-				init_new_audio();
+			$(document).ready(function() {
+				use_html5_audio();
 			});
 		</script>
 	</head>

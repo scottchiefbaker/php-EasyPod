@@ -1,25 +1,31 @@
+var update_interval = 0;
+var auto_ui_updates = 1;
+
+function use_html5_audio() {
+	// Hide the HTML5 audio
+	$("#audio").addClass('d-none');
+	// Show our new audio
+	$("#new_audio").removeClass('d-none');
+
+	update_ui();
+}
+
 function pause() {
-	var playb  = qsa("#play-icon")[0];
-	var pauseb = qsa("#pause-icon")[0];
+	$("#play-icon").removeClass('d-none');
+	$("#pause-icon").addClass('d-none');
 
-	playb.classList.remove('d-none');
-	pauseb.classList.add('d-none');
-
-	qsa("#audio")[0].pause();
+	$("#audio").get(0).pause();
 
 	clearInterval(update_interval);
 }
 
-var update_interval = 0;
 function play() {
-	var playb  = qsa("#play-icon")[0];
-	var pauseb = qsa("#pause-icon")[0];
+	$("#play-icon").addClass('d-none');
+	$("#pause-icon").removeClass('d-none');
 
-	pauseb.classList.remove('d-none');
-	playb.classList.add('d-none');
+	$("#audio").get(0).play();
 
-	qsa("#audio")[0].play();
-
+	// Start the auto-refresh of the display
 	if (!update_interval) {
 		update_interval = setInterval(update_ui, 500);
 	}
@@ -55,15 +61,15 @@ function seek(event) {
 	var offsetl = event.target.offsetLeft;
 	var clickl  = event.clientX;
 
-	var total = qsa('#progress-bar')[0].clientWidth;
+	var total = $('#progress-bar').get(0).clientWidth;
 	var start = clickl - offsetl;
 
-	var totald = qsa("#audio")[0].duration;
+	var totald = $("#audio").get(0).duration;
 	var seekp  = (start / total);
 
 	set_bar(seekp * 100);
 
-	qsa("#audio")[0].currentTime = seekp * totald;
+	$("#audio").get(0).currentTime = seekp * totald;
 
 	update_ui();
 	play();
@@ -71,16 +77,16 @@ function seek(event) {
 
 function set_bar(percent) {
 	//console.log("Setting bar to %s", percent);
-	qsa('#duration-bar')[0].style.width = percent + "%";
+	$('#duration-bar').css('width', percent + "%");
 }
 
 function set_text(mystr) {
 	//console.log("Setting text to '%s'", mystr);
-	qsa('#text-status')[0].innerHTML = mystr;
+	$("#text-status").html(mystr);
 }
 
-function get_playing_info() {
-	elem = qsa("#audio")[0];
+function get_player_status() {
+	elem = $("#audio").get(0);
 
 	var cur = elem.currentTime;
 	var tot = elem.duration ?? 0;
@@ -92,29 +98,18 @@ function get_playing_info() {
 }
 
 function update_ui(mystatus, mypercent) {
-	//console.log("UPDATE UI");
+	// UI updates are temporarily disabled
+	if (!auto_ui_updates) { return null; }
 
-	var x = get_playing_info();
+	var x = get_player_status();
 	var cur = x[0];
 	var tot = x[1];
 	var per = x[2];
 
+	// The progress percentage
 	set_bar(per);
-	//set_text(cur + "m / " + tot + "m");
+	// The text display
 	set_text(time_format(cur) + " / " + time_format(tot));
-}
-
-function qsa(sel) {
-	var ret = document.querySelectorAll(sel);
-
-	return ret;
-}
-
-function init_new_audio() {
-	// Hide the HTML5 audio
-	qsa("#audio")[0].classList.add('d-none');
-	// Show our new audio
-	qsa("#new_audio")[0].classList.remove('d-none');
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
