@@ -17,6 +17,20 @@
 				use_html5_audio();
 			});
 		</script>
+
+		<style>
+			#progress-bar {
+				background: #e6e6e6;
+				margin-top: 45px;
+				height    : 8px;
+			}
+
+			#duration-bar {
+				background: var(--bs-success);
+				height    : 8px;
+				width     : 0px;
+			}
+		</style>
 	</head>
 
 	<body class="container-lg">
@@ -72,8 +86,8 @@
 					</svg>
 				</div>
 
-				<div class="ms-4 mb-2 w-100" id="progress-bar" style="background: #e6e6e6; margin-top: 45px; height: 8px;" onclick="seek(event);" role="button">
-					<div class="bg-success" id="duration-bar" style="height: 8px; width: 0px; "></div>
+				<div class="ms-4 mb-2 w-100" id="progress-bar" onclick="seek(event);" role="button">
+					<div class="" id="duration-bar"></div>
 				</div>
 			</div>
 
