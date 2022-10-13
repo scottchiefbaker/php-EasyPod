@@ -1,4 +1,6 @@
+// ID for the setInterval() of the UI updating
 var update_interval = 0;
+// If this is zero the UI won't update while the audio is playing
 var auto_ui_updates = 1;
 
 function use_html5_audio() {
@@ -51,6 +53,7 @@ function pause() {
 
 	$("#audio").get(0).pause();
 
+	// Stop the UI updating while we're paused
 	clearInterval(update_interval);
 }
 
@@ -104,6 +107,7 @@ function seek(event) {
 
 	set_bar(seekp * 100);
 
+	// Set the time on the audio tag to the seconds we calculated
 	$("#audio").get(0).currentTime = seekp * totald;
 
 	update_ui();
