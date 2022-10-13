@@ -2,6 +2,7 @@
 var update_interval = 0;
 // If this is zero the UI won't update while the audio is playing
 var auto_ui_updates = 1;
+var is_touch_device = 0;
 
 function use_html5_audio() {
 	// Hide the HTML5 audio
@@ -11,40 +12,45 @@ function use_html5_audio() {
 
 	update_ui();
 	init_bar_hover();
+
+	is_touch_device = is_touch_enabled();
 }
 
 function init_bar_hover() {
-	$("#progress-bar").hover(
-		// When mouse enters we don't update the UI while playing
-		function() { auto_ui_updates = 0; },
-		// When mouse leaves we re-enables UI updates
-		function() { auto_ui_updates = 1; },
-	);
+	// Touch devices don't get the mouse hover events
+	if (!is_touch_device) {
+		$("#progress-bar").hover(
+			// When mouse enters we don't update the UI while playing
+			function() { auto_ui_updates = 0; },
+			// When mouse leaves we re-enables UI updates
+			function() { auto_ui_updates = 1; },
+		);
 
-	// As the move slides over the bar update the line
-	$("#progress-bar").mousemove(
-		function(event) {
-			var offsetl = event.target.offsetLeft;
-			var clickl  = event.clientX;
+		// As the move slides over the bar update the line
+		$("#progress-bar").mousemove(
+			function(event) {
+				var offsetl = event.target.offsetLeft;
+				var clickl  = event.clientX;
 
-			var total = $('#progress-bar').get(0).clientWidth;
-			var start = clickl - offsetl;
+				var total = $('#progress-bar').get(0).clientWidth;
+				var start = clickl - offsetl;
 
-			var totald = $("#audio").get(0).duration;
-			var seekp  = (start / total);
+				var totald = $("#audio").get(0).duration;
+				var seekp  = (start / total);
 
-			// Set the progress bar to where the cursor is
-			set_bar(seekp * 100);
+				// Set the progress bar to where the cursor is
+				set_bar(seekp * 100);
 
-			// Get the duration
-			var x   = get_player_status();
-			var tot = x[1];
+				// Get the duration
+				var x   = get_player_status();
+				var tot = x[1];
 
-			// The time in seconds is the percentage of the total duration
-			var cursor_pos = (seekp * tot);
-			set_text(time_format(cursor_pos) + " / " + time_format(tot));
-		},
-	);
+				// The time in seconds is the percentage of the total duration
+				var cursor_pos = (seekp * tot);
+				set_text(time_format(cursor_pos) + " / " + time_format(tot));
+			},
+		);
+	}
 }
 
 function pause() {
@@ -67,6 +73,8 @@ function play() {
 	if (!update_interval) {
 		update_interval = setInterval(update_ui, 500);
 	}
+
+	auto_ui_updates = 1;
 }
 
 // This is used to format the output for the text display under the duration bar
@@ -149,6 +157,12 @@ function update_ui(mystatus, mypercent) {
 	set_bar(per);
 	// The text display
 	set_text(time_format(cur) + " / " + time_format(tot));
+}
+
+function is_touch_enabled() {
+    return ( 'ontouchstart' in window ) ||
+           ( navigator.maxTouchPoints > 0 ) ||
+           ( navigator.msMaxTouchPoints > 0 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
