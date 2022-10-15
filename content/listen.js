@@ -136,6 +136,10 @@ function get_player_status() {
 	var tot = elem.duration ?? 0;
 	var per = (cur / tot) * 100;
 
+	if (isNaN(tot)) {
+		tot = 0;
+	}
+
 	var ret = [cur, tot, per];
 
 	return ret;
