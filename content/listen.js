@@ -2,6 +2,8 @@
 var update_interval = 0;
 // If this is zero the UI won't update while the audio is playing
 var auto_ui_updates = 1;
+// Used to reset the hover bar after a mouseleave
+var cur_width = 0;
 
 function use_html5_audio() {
 	// Hide the HTML5 audio
@@ -18,9 +20,17 @@ function init_bar_hover() {
 	if (!is_touch_enabled()) {
 		$("#progress-bar").hover(
 			// When mouse enters we don't update the UI while playing
-			function() { auto_ui_updates = 0; },
+			function() {
+				auto_ui_updates = 0;
+				cur_width = $("#duration-bar").css('width');
+				//console.log("Saving %s" , cur_width);
+			},
 			// When mouse leaves we re-enables UI updates
-			function() { auto_ui_updates = 1; },
+			function() {
+				auto_ui_updates = 1;
+				//console.log("Resetting %s" , cur_width);
+				cur_width = $("#duration-bar").css('width', cur_width);
+			},
 		);
 
 		// As the move slides over the bar update the line
@@ -111,6 +121,7 @@ function seek(event) {
 	var seekp  = (start / total);
 
 	set_bar(seekp * 100);
+	cur_width = $("#duration-bar").css('width');
 
 	// Set the time on the audio tag to the seconds we calculated
 	$("#audio").get(0).currentTime = seekp * totald;
