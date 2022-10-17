@@ -68,7 +68,7 @@
 		</div>
 
 		{if !$ep.isComingSoon}
-		<audio id="audio" class="w-100 player" controls autoplay>
+		<audio id="audio" class="w-100 player" controls>
 			<source src="{$ep.audioFile}" />
 		</audio>
 
