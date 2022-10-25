@@ -142,8 +142,6 @@ class EasyPod {
 	function get_rss_feed($info) {
 		global $sluz;
 
-		$sluz->assign($info);
-
 		// We massage the episode list a little before we spit it out as RSS
 		$base_url = $info['global']['podcast_url'] ?? "";
 		$eps      = $info['episodes'] ?? [];
@@ -157,12 +155,16 @@ class EasyPod {
 				$eps[$key]['audioFile'] = $base_url . $file;
 			}
 
-			// We remove any hidden episodes from the RSS feed
+			// We remove any hidden/future episodes from the RSS feed
 			$is_hidden = !empty($eps[$key]['hidden']);
-			if ($is_hidden) {
+			$is_future = !empty($eps[$key]['is_future']);
+
+			if ($is_hidden || $is_future) {
 				unset($info['episodes'][$key]);
 			}
 		}
+
+		$sluz->assign($info);
 
 		$vars = [];
 		$ret  = $sluz->fetch("tpls/rss.stpl");
