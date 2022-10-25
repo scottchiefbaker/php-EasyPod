@@ -43,7 +43,7 @@
 		</a>
 		{/foreach}
 
-		<div class="d-flex">
+		<div class="d-flex mb-2">
 			<div class="flex-fill">{$total} available episodes</div>
 			<div class="flex-fill text-end">
 				<a title="RSS Feed" class="text-warning" href="{$info.podcast_url}index.php?rss=true">
