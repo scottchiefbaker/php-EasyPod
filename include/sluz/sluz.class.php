@@ -2,6 +2,8 @@
 
 ////////////////////////////////////////////////////////
 
+define('SLUZ_INLINE', 987123654); // Just a random number
+
 class sluz {
 	public $version      = '0.6';
 	public $tpl_file     = null;
@@ -45,7 +47,7 @@ class sluz {
 		if ($str[0] !== "{") {
 			$ret = $str;
 		// Simple variable replacement {$foo} or {$foo|default:"123"}
-		} elseif (preg_match('/^\{\s*\$(\w[\w\|\.\'":]*)\s*\}$/', $str, $m)) {
+		} elseif (preg_match('/^\{\$(\w[\w\|\.\'":]*)\s*\}$/', $str, $m)) {
 			$ret = $this->variable_block($m[1]);
 		// If statement {if $foo}{/if}
 		} elseif (preg_match('/^\{if (.+?)\}(.+)\{\/if\}$/s', $str, $m)) {
@@ -192,7 +194,7 @@ class sluz {
 		// If we're in simple mode and we have a __halt_compiler() we can assume inline mode
 		$inline_simple = $this->simple_mode && !$tpl_file && $this->get_inline_content($this->php_file);
 
-		if ($tpl_file === "INLINE" || $inline_simple) {
+		if ($tpl_file === SLUZ_INLINE || $inline_simple) {
 			$str = $this->get_inline_content($this->php_file);
 		} elseif (!is_readable($tf)) {
 			$this->error_out("Unable to load template file <code>$tf</code>",42280);
@@ -439,6 +441,11 @@ class sluz {
 			$ret = $this->array_dive($str, $this->tpl_vars) ?? "";
 		}
 
+		// Array used as a scalar should silently convert to a string
+		if (is_array($ret)) {
+			return 'Array';
+		}
+
 		return $ret;
 	}
 
@@ -519,8 +526,12 @@ class sluz {
 
 		$src = $this->peval($src);
 
-		if (!is_array($src)) {
-			return $this->error_out($m[1] . " is not an array", 85824);
+		// If $src isn't an array we convert it to one so foreach doesn't barf
+		if (isset($src) && !is_array($src)) {
+			$src = [$src];
+		// This prevents an E_WARNING on null (but doesn't output anything)
+		} elseif (is_null($src)) {
+			$src = [];
 		}
 
 		$ret = '';
