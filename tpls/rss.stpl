@@ -33,7 +33,7 @@
 			<pubDate>{$ep.pubDate|rfc_822_date}</pubDate>
 			<guid isPermaLink="false">{$global.podcast_url}{$ep.link}</guid>
 			<itunes:author>{$global.author}</itunes:author>
-			<enclosure url="{$global.podcast_url}{$ep.audioFile}" length="{$ep.audioFileBytes|default:12345678}" type="audio/mpeg" />
+			<enclosure url="{$ep.audioFile}" length="{$ep.audioFileBytes|default:12345678}" type="audio/mpeg" />
 			<itunes:duration>{$ep.duration}</itunes:duration>
 			<itunes:subtitle>{$ep.description}</itunes:subtitle>
 			<itunes:summary>{$ep.summary}</itunes:summary>
