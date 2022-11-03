@@ -146,8 +146,11 @@ class EasyPod {
 		$base_url = $info['global']['podcast_url'] ?? "";
 		$eps      = $info['episodes'] ?? [];
 
+		$errors = [];
+
 		foreach ($eps as $key => $x) {
 			$file = $eps[$key]['audioFile'] ?? "";
+			$num  = $x['number'] ?? 0;
 
 			// The audioFile directive can be a relative link: "content/ep1.mp3"
 			// if so, we make it a FULL URL for the RSS feed
@@ -162,6 +165,23 @@ class EasyPod {
 			if ($is_hidden || $is_future) {
 				unset($info['episodes'][$key]);
 			}
+
+			//////////////////////////////////////////////////////////////////
+			// Sanity check some things for the RSS feed
+			//////////////////////////////////////////////////////////////////
+
+			if (empty($x['duration'])) {
+				$errors[] = "Episode $num has no duration";
+			}
+
+			if (empty($x['audioFileBytes'])) {
+				$errors[] = "Episode $num has no audioFileBytes";
+			}
+		}
+
+		if ($errors) {
+			print "<h1>Errors found:</h1>";
+			kd($errors);
 		}
 
 		$sluz->assign($info);
