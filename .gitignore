@@ -1,3 +1,4 @@
 podcast.ini
 content/logo.*
-content/*mp3
+content/*.mp3
+content/*.jpg
