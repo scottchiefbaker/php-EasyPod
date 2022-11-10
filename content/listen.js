@@ -1,5 +1,5 @@
 // ID for the setInterval() of the UI updating
-var update_interval = 0;
+var update_interval_id = 0;
 // If this is zero the UI won't update while the audio is playing
 var auto_ui_updates = 1;
 // Used to reset the hover bar after a mouseleave
@@ -11,8 +11,10 @@ function use_html5_audio() {
 	// Show our new audio
 	$("#new_audio").removeClass('d-none');
 
-	update_ui();
 	init_bar_hover();
+
+	update_ui();
+	update_interval_id = setInterval(update_ui, 500);
 }
 
 function init_bar_hover() {
@@ -65,9 +67,6 @@ function pause() {
 	$("#pause-icon").addClass('d-none');
 
 	$("#audio").get(0).pause();
-
-	// Stop the UI updating while we're paused
-	clearInterval(update_interval);
 }
 
 function play() {
@@ -75,11 +74,6 @@ function play() {
 	$("#pause-icon").removeClass('d-none');
 
 	$("#audio").get(0).play();
-
-	// Start the auto-refresh of the display
-	if (!update_interval) {
-		update_interval = setInterval(update_ui, 500);
-	}
 
 	auto_ui_updates = 1;
 }
