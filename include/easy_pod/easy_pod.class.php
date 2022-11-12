@@ -164,6 +164,7 @@ class EasyPod {
 
 			if ($is_hidden || $is_future) {
 				unset($info['episodes'][$key]);
+				continue;
 			}
 
 			//////////////////////////////////////////////////////////////////
