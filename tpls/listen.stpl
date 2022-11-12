@@ -104,8 +104,6 @@
 				</svg><span class="ms-2">More episodes</span></a>
 		</div>
 
-		<img class="d-none" src="https://www.perturb.org/gcount/gcount.php?name={$ep.title|string_sanitize}" />
 	</body>
-
 </html>
 

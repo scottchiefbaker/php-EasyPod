@@ -54,6 +54,5 @@
 			</div>
 		</div>
 
-		<img class="d-none mb-3" src="https://www.perturb.org/gcount/gcount.php?name={$info.title|string_sanitize}" />
 	</body>
 </html>
