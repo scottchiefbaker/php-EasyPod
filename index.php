@@ -4,8 +4,10 @@ require('include/global.php');
 
 ////////////////////////////////////////////////////////////
 
-$sluz = new sluz();
-$ep   = new EasyPod();
+$sluz   = new sluz();
+$ep     = new EasyPod();
+$filter = $_GET['filter'] ?? "";
+$filter = preg_quote($filter, '/');
 
 $info = $ep->get_data();
 
@@ -24,8 +26,18 @@ foreach ($info['episodes'] as $key => $val) {
 	$hidden      = $val['hidden']       ?? 0;
 	$future      = $val['is_future']    ?? 0;
 	$coming_soon = $val['isComingSoon'] ?? 0;
+	$desc        = $val['description']  ?? '';
+	$title       = $val['title']        ?? '';
 
 	$remove = (!$coming_soon && ($hidden || $future));
+
+	if ($filter) {
+		$is_match = preg_match("/$filter/i", $desc) || preg_match("/$filter/i", $title);
+
+		if (!$is_match) {
+			$remove = true;
+		}
+	}
 
 	if ($remove) {
 		unset($info['episodes'][$key]);
