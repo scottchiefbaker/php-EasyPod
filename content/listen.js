@@ -108,20 +108,25 @@ function seek(event) {
 	var offsetl = event.target.offsetLeft;
 	var clickl  = event.clientX;
 
+	var aud   = $("#audio").get(0);
 	var total = $('#progress-bar').get(0).clientWidth;
 	var start = clickl - offsetl;
 
-	var totald = $("#audio").get(0).duration;
+	var totald = aud.duration;
 	var seekp  = (start / total);
 
 	set_bar(seekp * 100);
 	cur_width = $("#duration-bar").css('width');
 
 	// Set the time on the audio tag to the seconds we calculated
-	$("#audio").get(0).currentTime = seekp * totald;
+	aud.currentTime = seekp * totald;
 
 	update_ui();
-	play();
+
+	// Wait until we have enough content downloaded that we can start the play
+	aud.addEventListener('canplay', (event) => {
+		play();
+	});
 }
 
 function set_bar(percent) {
