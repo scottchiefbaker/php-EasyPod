@@ -11,10 +11,27 @@ function use_html5_audio() {
 	// Show our new audio
 	$("#new_audio").removeClass('d-none');
 
+	// Show the time you would seek to on a hover of the duration bar
 	init_bar_hover();
+	// Add buttons to quick seek fwd/rev 15 seconds
+	init_quick_seek();
 
 	update_ui();
 	update_interval_id = setInterval(update_ui, 500);
+}
+
+function init_quick_seek() {
+	$("#quick_seek").removeClass('d-none');
+
+	$("#fwd_15").click(function()  {
+		var aud = $("#audio").get(0);
+		aud.currentTime = aud.currentTime + 15;
+	});
+
+	$("#rev_15").click(function() {
+		var aud = $("#audio").get(0);
+		aud.currentTime = aud.currentTime - 15;
+	});
 }
 
 function init_bar_hover() {
