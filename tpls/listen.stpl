@@ -34,6 +34,15 @@
 			.pointer {
 				cursor: pointer;
 			}
+
+			#play-icon, #pause-icon {
+				transition: all .2s ease-in;
+				color: var(--bs-dark);
+			}
+
+			#play-icon:hover, #pause-icon:hover {
+				color: var(--bs-success);
+			}
 		</style>
 	</head>
 
