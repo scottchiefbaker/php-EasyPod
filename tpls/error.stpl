@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name= "viewport" content="width=device-width, initial-scale=1">
+		<title>{$info.title}</title>
+
+		<link href="content/bootstrap.min.css" rel="stylesheet">
+		<link href="content/global.css" rel="stylesheet">
+		<link href="content/talk-bubble.ico" rel="icon" type="image/x-icon" />
+	</head>
+	<body class="container-lg border my-3 py-3">
+		<h1 class="mb-4 alert alert-danger">EasyPod Error</h1>
+
+		<div><b>Description:</b> {$err_msg}</div>
+
+		<div class="mb-3"><b>Error Number:</b> #{$err_num}</div>
+
+		<div>From <code>{$err_file}</code> on line <b>#{$err_line}</b></div>
+	</body>
+</html>

@@ -198,48 +198,20 @@ class EasyPod {
 	}
 
 	public function error_out($msg, int $err_num) {
-		$out = "<style>
-			.s_error {
-				font-family: sans;
-				border: 1px solid;
-				padding: 6px;
-				border-radius: 4px;
-				margin-bottom: 8px;
-			}
-
-			.s_error_head { margin-top: 0; }
-			.s_error_num { margin-top: 1em; }
-			.s_error_file {
-				margin-top: 1em;
-				padding-top: 0.5em;
-				font-size: .8em;
-				border-top: 1px solid;
-			}
-
-			.s_error code {
-				padding: .2rem .4rem;
-				font-size: 1.1em;
-				color: #fff;
-				background-color: #212529;
-				border-radius: .2rem;
-			}
-		</style>";
+		global $sluz;
 
 		$d    = debug_backtrace();
-		$file = $d[1]['file'] ?? "";
-		$line = $d[1]['line'] ?? 0;
+		$file = $d[0]['file'] ?? "";
+		$line = $d[0]['line'] ?? 0;
 
-		$out .= "<div class=\"s_error\">\n";
-		$out .= "<h1 class=\"s_error_head\">EasyPod Fatal Error</h1>";
-		$out .= "<div class=\"s_error_desc\"><b>Description:</b> $msg</div>";
-		$out .= "<div class=\"s_error_num\"><b>Number</b> #$err_num</div>";
-		if ($file && $line) {
-			$out .= "<div class=\"s_error_file\">Source: <code>$file</code> #$line</div>";
-		}
-		$out .= "</div>\n";
+		$sluz->assign('err_msg', $msg);
+		$sluz->assign('err_num', $err_num);
+		$sluz->assign('err_file', $file);
+		$sluz->assign('err_line', $line);
 
-		print $out;
+		$html = $sluz->fetch("tpls/error.stpl");
 
+		print $html;
 		exit;
 	}
 }

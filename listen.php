@@ -22,7 +22,7 @@ foreach ($eps['episodes'] as $x) {
 }
 
 if (!$info || ($x['is_future'] && empty($x['isComingSoon']))) {
-	$sluz->error_out("Unable to find episode $num", 19241);
+	$ep->error_out("Unable to find episode $num", 19241);
 }
 
 $ut = strtotime($info['pubDate']);
