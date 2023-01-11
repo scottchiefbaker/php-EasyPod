@@ -24,13 +24,11 @@ function init_quick_seek() {
 	$("#quick_seek").removeClass('d-none');
 
 	$("#fwd_15").click(function()  {
-		var aud = $("#audio").get(0);
-		aud.currentTime = aud.currentTime + 15;
+		quick_seek(15);
 	});
 
 	$("#rev_15").click(function() {
-		var aud = $("#audio").get(0);
-		aud.currentTime = aud.currentTime - 15;
+		quick_seek(-15);
 	});
 }
 
@@ -190,6 +188,19 @@ function is_touch_enabled() {
            ( navigator.maxTouchPoints > 0 ) ||
            ( navigator.msMaxTouchPoints > 0 );
 }
+
+function quick_seek(seconds) {
+	var aud = $("#audio").get(0);
+	aud.pause();
+
+	// Wait until we have enough content downloaded that we can start the play
+	aud.addEventListener('canplay', (event) => {
+		play();
+	});
+
+	aud.currentTime = aud.currentTime + seconds;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
