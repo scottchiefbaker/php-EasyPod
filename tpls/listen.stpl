@@ -23,6 +23,7 @@
 				background: #e6e6e6;
 				margin-top: 45px;
 				height    : 8px;
+				cursor    : ew-resize;
 			}
 
 			#duration-bar {
