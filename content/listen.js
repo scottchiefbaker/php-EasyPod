@@ -55,11 +55,10 @@ function init_bar_hover() {
 		// As the move slides over the bar update the line
 		$("#progress-bar").mousemove(
 			function(event) {
-				var offsetl = event.target.offsetLeft;
-				var clickl  = event.clientX;
-
-				var total = $('#progress-bar').get(0).clientWidth;
-				var start = clickl - offsetl;
+				var total   = event.currentTarget.clientWidth;
+				var offsetl = event.currentTarget.offsetLeft;
+				var clickl  = event.originalEvent.clientX;
+				var start   = clickl - offsetl;
 
 				var totald = $("#audio").get(0).duration;
 				var seekp  = (start / total);
@@ -122,12 +121,11 @@ function time_format(seconds) {
 }
 
 function seek(event) {
-	var offsetl = event.target.offsetLeft;
+	var total   = event.currentTarget.clientWidth;
+	var offsetl = event.currentTarget.offsetLeft;
 	var clickl  = event.clientX;
-
-	var aud   = $("#audio").get(0);
-	var total = $('#progress-bar').get(0).clientWidth;
-	var start = clickl - offsetl;
+	var start   = clickl - offsetl;
+	var aud     = $("#audio").get(0);
 
 	var totald = aud.duration;
 	var seekp  = (start / total);
