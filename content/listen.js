@@ -132,7 +132,7 @@ function seek(event) {
 	cur_width = $("#duration-bar").css('width');
 
 	// Set the time on the audio tag to the seconds we calculated
-	aud.currentTime = seekp * totald;
+	aud.pause();
 
 	update_ui();
 
@@ -140,6 +140,8 @@ function seek(event) {
 	aud.addEventListener('canplay', (event) => {
 		play();
 	});
+
+	aud.currentTime = seekp * totald;
 }
 
 function set_bar(percent) {
