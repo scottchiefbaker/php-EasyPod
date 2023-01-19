@@ -5,11 +5,21 @@ var auto_ui_updates = 1;
 // Used to reset the hover bar after a mouseleave
 var cur_width = 0;
 
-function use_html5_audio() {
+function use_html5_audio(type) {
 	// Hide the HTML5 audio
 	$("#audio").addClass('d-none');
 	// Show our new audio
 	$("#new_audio").removeClass('d-none');
+
+	if (type === "bar") {
+		// Use the standard bar
+		$(".canvas_wrapper").addClass('d-none');
+		$("#progress-bar").removeClass('d-none');
+	} else {
+		// Use fake waveform
+		$(".canvas_wrapper").removeClass('d-none');
+		$("#progress-bar").addClass('d-none');
+	}
 
 	// Show the time you would seek to on a hover of the duration bar
 	init_bar_hover();
@@ -35,7 +45,13 @@ function init_quick_seek() {
 function init_bar_hover() {
 	// Touch devices don't get the mouse hover events
 	if (!is_touch_enabled()) {
-		$("#progress-bar").hover(
+		var elem = $("#progress-bar, #my_canvas");
+
+		elem.click(function() {
+			seek(event);
+		});
+
+		elem.hover(
 			// When mouse enters we don't update the UI while playing
 			function() {
 				auto_ui_updates = 0;
@@ -51,7 +67,7 @@ function init_bar_hover() {
 		);
 
 		// As the move slides over the bar update the line
-		$("#progress-bar").mousemove(
+		elem.mousemove(
 			function(event) {
 				var total   = event.currentTarget.clientWidth;
 				var offsetl = event.currentTarget.offsetLeft;
@@ -147,6 +163,14 @@ function seek(event) {
 function set_bar(percent) {
 	//console.log("Setting bar to %s", percent);
 	$('#duration-bar').css('width', percent + "%");
+
+	var file = $("audio")[0].currentSrc;
+	var opts = { 'verbose': false, 'method': 'random', };
+	var ms   = draw_random_waveform('my_canvas', 'lightgray', 'green', percent, file, opts)
+
+	//if (percent >= 100) {
+	//    alert("Setting bar to " + percent);
+	//}
 }
 
 function set_text(mystr) {
@@ -202,7 +226,6 @@ function quick_seek(seconds) {
 
 	aud.currentTime = aud.currentTime + seconds;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

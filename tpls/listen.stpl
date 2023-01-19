@@ -11,10 +11,15 @@
 
 		<script src="content/jquery.min.js"></script>
 		<script src="content/listen.js"></script>
+		<script src="content/rand_waveform.js"></script>
 
 		<script>
 			$(document).ready(function() {
-				use_html5_audio();
+				//var type = "bar";
+				var type = "waveform";
+
+				// Use fancy HTML5 audio instead of the native browser <audio> stuff
+				use_html5_audio(type);
 			});
 		</script>
 
@@ -25,6 +30,10 @@
 				cursor    : ew-resize;
 				position  : relative;
 				top       : 40px;
+			}
+
+			#my_canvas {
+				cursor    : ew-resize;
 			}
 
 			#duration-bar {
@@ -47,11 +56,16 @@
 			}
 
 			.right_top {
-				height: 60%;
+				height: 100%;
 			}
 
-			.left_top {
-				height: 40%;
+			.right_bottom {
+				height: 30%;
+				display: none;
+			}
+
+			#quick_seek {
+				margin-left: 124px;
 			}
 		</style>
 	</head>
@@ -95,7 +109,7 @@
 			<source src="{$ep.audioFile}" />
 		</audio>
 
-		<div id="new_audio" class="d-none mb-2">
+		<div id="new_audio" class="d-none mb-0">
 			<div class="d-flex">
 				<div class="play_pause">
 					<div id="play-icon" onclick="play();" role="button">
@@ -113,27 +127,12 @@
 
 				<div class="flex-grow-1 ms-4 right_display">
 					<div class="right_top">
-						<div class="w-100" id="progress-bar" onclick="seek(event);" role="button">
+						<div class="d-none w-100" id="progress-bar" onclick="seek(event);" role="button">
 							<div class="" id="duration-bar"></div>
 						</div>
-					</div>
-					<div class="right_bottom">
-						<div class="d-flex">
-							<div class="flex-grow-1 d-none" id="quick_seek">
-								<span title="Quick rewind 15 seconds">
-									<svg class="pointer" id="rev_15" style="width:24px; height:24px; margin-right: 4px;" viewBox="0 0 24 24">
-										<path fill="currentColor" d="M12.5 3C17.15 3 21.08 6.03 22.47 10.22L20.1 11C19.05 7.81 16.04 5.5 12.5 5.5C10.54 5.5 8.77 6.22 7.38 7.38L10 10H3V3L5.6 5.6C7.45 4 9.85 3 12.5 3M10 12V22H8V14H6V12H10M12 12H18V14H14V16H16C17.11 16 18 16.9 18 18V20C18 21.11 17.11 22 16 22H12V20H16V18H12V12Z" />
-									</svg>
-								</span>
 
-								<span title="Quick fast-forward 15 seconds">
-									<svg class="pointer" id="fwd_15" style="width:24px; height:24px" viewBox="0 0 24 24">
-										<path fill="currentColor" d="M11.5 3C14.15 3 16.55 4 18.4 5.6L21 3V10H14L16.62 7.38C15.23 6.22 13.46 5.5 11.5 5.5C7.96 5.5 4.95 7.81 3.9 11L1.53 10.22C2.92 6.03 6.85 3 11.5 3M10 12V22H8V14H6V12H10M12 12H18V14H14V16H16C17.11 16 18 16.9 18 18V20C18 21.11 17.11 22 16 22H12V20H16V18H12V12Z" />
-									</svg>
-								</span>
-							</div>
-
-							<div class="flex-grow-1 text-end" id="text-status"></div>
+						<div class="canvas_wrapper w-100 h-100">
+							<canvas class="w-100" style="vertical-align: bottom;" onclick="seek(event);" id="my_canvas" width="10" height="10"></canvas>
 						</div>
 					</div>
 				</div>
@@ -143,6 +142,24 @@
 			</div>
 		</div>
 		{/if}
+
+		<div class="d-flex">
+			<div class="flex-grow-1 d-none" id="quick_seek">
+				<span title="Quick rewind 15 seconds">
+					<svg class="pointer" id="rev_15" style="width:24px; height:24px; margin-right: 4px;" viewBox="0 0 24 24">
+						<path fill="currentColor" d="M12.5 3C17.15 3 21.08 6.03 22.47 10.22L20.1 11C19.05 7.81 16.04 5.5 12.5 5.5C10.54 5.5 8.77 6.22 7.38 7.38L10 10H3V3L5.6 5.6C7.45 4 9.85 3 12.5 3M10 12V22H8V14H6V12H10M12 12H18V14H14V16H16C17.11 16 18 16.9 18 18V20C18 21.11 17.11 22 16 22H12V20H16V18H12V12Z" />
+					</svg>
+				</span>
+
+				<span title="Quick fast-forward 15 seconds">
+					<svg class="pointer" id="fwd_15" style="width:24px; height:24px" viewBox="0 0 24 24">
+						<path fill="currentColor" d="M11.5 3C14.15 3 16.55 4 18.4 5.6L21 3V10H14L16.62 7.38C15.23 6.22 13.46 5.5 11.5 5.5C7.96 5.5 4.95 7.81 3.9 11L1.53 10.22C2.92 6.03 6.85 3 11.5 3M10 12V22H8V14H6V12H10M12 12H18V14H14V16H16C17.11 16 18 16.9 18 18V20C18 21.11 17.11 22 16 22H12V20H16V18H12V12Z" />
+					</svg>
+				</span>
+			</div>
+
+			<div class="flex-grow-1 text-end" id="text-status"></div>
+		</div>
 
 		<div class="text-center mb-3">
 			<a href="." class="text-decoration-none">
