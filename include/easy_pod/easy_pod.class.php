@@ -80,6 +80,24 @@ class EasyPod {
 					$data['isComingSoon'] = false;
 				}
 
+				$duration = $data['duration'] ?? 0;
+				$parts    = preg_split("/:/", $duration);
+
+				$secs = 0;
+				if (count($parts) === 3) {
+					$secs += $parts[0] * 3600;
+					$secs += $parts[1] * 60;
+					$secs += $parts[2];
+				} elseif (count($parts) == 2) {
+					$secs += $parts[0] * 60;
+					$secs += $parts[1];
+				} elseif (count($parts) == 1) {
+					$secs += $parts[0];
+				}
+
+				$data['duration_str']  = round($secs / 60) . "m";
+				$data['duration_secs'] = $secs;
+
 				// It's "new" if it's within the last X days
 				$is_new         = ($data['pubUnixtime'] > time() - (86400 * 5));
 				$data['is_new'] = $is_new;
