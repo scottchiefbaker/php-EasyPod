@@ -104,21 +104,28 @@ class EasyPod {
 			}
 		}
 
-		// Sort the episodes by number
-		usort($ret['episodes'], function($a, $b){
-			$sort_field = "number";
-			$order      = "desc";
+		$sort_field = $ret['global']['sort_field']     ?? "number";
+		$sort_dir   = $ret['global']['sort_direction'] ?? "desc";
 
-			// Ascending
-			if ($order === "asc") {
-				return $a[$sort_field] <=> $b[$sort_field];
-			// Descending
-			} else {
-				return $b[$sort_field] <=> $a[$sort_field];
-			}
-		});
+		// Sort the episodes by number
+		usort($ret['episodes'], $this->sort_feed($sort_field, $sort_dir));
 
 		return $ret;
+	}
+
+	function sort_feed($sort_field, $sort_dir) {
+		return function ($a, $b) use ($sort_field, $sort_dir) {
+			$a_field = $a[$sort_field] ?? "";
+			$b_field = $b[$sort_field] ?? "";
+
+			// Ascending
+			if ($sort_dir === "asc") {
+				return $a_field <=> $b_field;
+			// Descending
+			} else {
+				return $b_field <=> $a_field;
+			}
+		};
 	}
 
 	function get_data2() {
