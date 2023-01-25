@@ -23,7 +23,7 @@
 		{foreach $eps as $x}
 		<a href="{$x.link}" class="text-decoration-none">
 		<div class="card mb-2">
-			<div class="card-header bg-dark text-light">
+			<div class="card-header bg-dark text-light d-flex">
                 {if $x.is_new}
                 <span class="text-warning" title="Episode is new">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
@@ -31,7 +31,12 @@
                     </svg>
                 </span>
                 {/if}
-                <b>Episode #{$x.number}:</b> {$x.title}
+				<div class="flex-grow-1">
+					<b>Episode #{$x.number}:</b> {$x.title}
+				</div>
+				<div class="d-none d-md-block" title="Runtime: {$x.duration}">
+					{$x.duration_str}
+				</div>
 			</div>
 			<div class="card-body">
 				{if $x.isComingSoon}
