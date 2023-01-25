@@ -67,6 +67,17 @@
 			#quick_seek {
 				margin-left: 124px;
 			}
+
+			/* This is for small width devices - phones */
+			@media (min-width: 0px) and (max-width: 576px) {
+				.bi-play-circle-fill, .bi-pause-circle-fill {
+					width: 70px;
+				}
+
+				#quick_seek {
+					margin-left: 77px;
+				}
+			}
 		</style>
 	</head>
 
@@ -125,7 +136,7 @@
 					</div>
 				</div>
 
-				<div class="flex-grow-1 ms-4 right_display">
+				<div class="flex-grow-1 ms-2 ms-sm-4 right_display">
 					<div class="right_top">
 						<div class="d-none w-100" id="progress-bar" onclick="seek(event);" role="button">
 							<div class="" id="duration-bar"></div>
