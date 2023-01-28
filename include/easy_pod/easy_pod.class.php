@@ -98,6 +98,10 @@ class EasyPod {
 				$data['duration_str']  = round($secs / 60) . "m";
 				$data['duration_secs'] = $secs;
 
+				// Convert '\n' in the input date to REAL \n
+				$data['description'] = str_replace('\\n', "\n", $data['description']);
+				$data['description'] = nl2br($data['description']);
+
 				// It's "new" if it's within the last X days
 				$is_new         = ($data['pubUnixtime'] > time() - (86400 * 5));
 				$data['is_new'] = $is_new;
