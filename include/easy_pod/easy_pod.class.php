@@ -85,14 +85,14 @@ class EasyPod {
 
 				$secs = 0;
 				if (count($parts) === 3) {
-					$secs += $parts[0] * 3600;
-					$secs += $parts[1] * 60;
-					$secs += $parts[2];
+					$secs += intval($parts[0] * 3600);
+					$secs += intval($parts[1] * 60);
+					$secs += intval($parts[2]);
 				} elseif (count($parts) == 2) {
-					$secs += $parts[0] * 60;
-					$secs += $parts[1];
+					$secs += intval($parts[0] * 60);
+					$secs += intval($parts[1]);
 				} elseif (count($parts) == 1) {
-					$secs += $parts[0];
+					$secs += intval($parts[0]);
 				}
 
 				$data['duration_str']  = round($secs / 60) . "m";
