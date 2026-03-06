@@ -35,7 +35,9 @@
 					<b>Episode #{$x.number}:</b> {$x.title}
 				</div>
 				<div class="d-none d-md-block" title="Runtime: {$x.duration}">
+					{if $duration_secs > 0}
 					{$x.duration_str}
+					{/if}
 				</div>
 			</div>
 			<div class="card-body">
