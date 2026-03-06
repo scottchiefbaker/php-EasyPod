@@ -1,7 +1,7 @@
 <?php
 
 class EasyPod {
-	public $version = 0.1;
+	public $version = 0.3;
 
 	function __construct() {
 
