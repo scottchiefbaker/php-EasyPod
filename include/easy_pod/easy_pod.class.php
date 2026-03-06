@@ -12,23 +12,8 @@ class EasyPod {
 			$this->error_out("Unable to read '$file'", 34812);
 		}
 
-		$lines = file($file);
-
-		$ret     = [];
-		$section = "_";
-
-		// Poor mans parse_ini() cuz the PHP one really sucks
-		// 1. Doesn't let you have an "=" in the payload
-		// 2. Doesn't let you have a ' in the payload
-		while ($line = array_shift($lines)) {
-			if (preg_match("/^\[(.+?)\]/", $line, $m)) { // Section heading
-				$section = $m[1];
-			} elseif (preg_match('/^(\w.*?)\s*=\s*(.*?)\s*$/', $line, $m)) { // Key/Value pair
-				$key = $m[1];
-				$val = $m[2];
-				$ret[$section][$key] = $val;
-			}
-		}
+		$str = file_get_contents($file);
+		$ret = $this->parse_ini($str);
 
 		$cs_days_global = $ret['global']['comingSoonDays'] ?? 0;
 
@@ -242,5 +227,46 @@ class EasyPod {
 
 		print $html;
 		exit;
+	}
+
+	private function parse_ini(string $str) {
+		$ret      = [];
+		$section  = "_";
+		$line_num = 0;
+
+		$lines = preg_split("/\n/", $str);
+		$total = count($lines);
+
+		// Poor mans parse_ini() cuz the PHP one really sucks
+		// 1. Doesn't let you have an "=" in the payload
+		// 2. Doesn't let you have a ' in the payload
+		while ($line_num < $total) {
+			$line = rtrim($lines[$line_num], "\n");
+
+			if (preg_match("/^\[(.+?)\]/", $line, $m)) { // Section heading
+				$section = $m[1];
+			} elseif (preg_match('/^(\w.*?)\s*=\s*"""(.*)/', $line, $m)) { // """ multiline string
+				$key = $m[1];
+				$val = ($m[2] ?? "") . "\n";
+
+				// Keep adding on to the payload until we see a """ ending delim
+				$next = rtrim($lines[++$line_num], "\n");
+				while (!preg_match("/\"\"\"/", $next)) {
+					$val .= $next . "\n";
+					$next = rtrim($lines[++$line_num], "\n");
+				}
+
+				$ret[$section][$key] = trim($val);
+			} elseif (preg_match('/^(\w.*?)\s*=\s*(.*?)\s*$/', $line, $m)) { // Key/Value pair
+				$key = $m[1];
+				$val = $m[2];
+
+				$ret[$section][$key] = $val;
+			}
+
+			$line_num++;
+		}
+
+		return $ret;
 	}
 }
